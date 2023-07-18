@@ -1,0 +1,6 @@
+PhoNER_COVID19/
+fintunning_step/resources
+server/
+client/phobert-base/
+client/best-model.pt 
+client/final-model.pt

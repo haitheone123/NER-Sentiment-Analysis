@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Centered Box</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+        }
+
+        .box {
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin-top: 19px;
+            margin-bottom: 40px;
+            margin-right: 60px;
+        }
+
+        .input-container {
+            display: flex;
+            flex-direction: column;
+            margin-top: 20px;
+            width: 400px;
+        }
+
+        <!-- .input-container textarea {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            height: 150px;
+            resize: vertical;
+        } -->
+
+        .input-container textarea {
+        margin-bottom: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        height: 150px;
+        resize: vertical;
+        background-color: #f8f8f8;
+        color: #333;
+        transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .input-container textarea:focus {
+            outline: none;
+            border-color: #66afe9;
+            box-shadow: 0 0 0 2px rgba(102, 175, 233, 0.6);
+        }
+
+        .input-container button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .output {
+            margin-top: 60px;
+            padding: 20px;
+            border-radius: 5px;
+            background-color: #f0f0f0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            font-size: 16px;
+            text-align: center;
+            white-space: pre-line;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="box">
+            <h1>DEMO NER_AI</h1>
+            <p>Phiên bản 07/07/2023</p>
+        </div>
+        <div class="input-container">
+            <textarea id="text-input" placeholder="Enter long text"></textarea>
+            <button onclick="submitText()">Submit</button>
+        </div>
+    </div>
+    <div class="container">
+        <div class="function-container">
+            <h3>Select Function:</h3>
+            <select id="function-select">
+                <option value="functionA">Named entity recognition</option>
+                <option value="functionB">Relation Extraction</option>
+                <option value="functionC">Sentiment analysis</option>
+            </select>
+        </div>
+    </div>
+    <div class="container" >
+        <div id="output" class="output">Please submit to see</div>
+    </div>
+    <script>
+        async function submitText() {
+            var text = document.getElementById("text-input").value;
+            console.log("Submitted text:", text);
+
+            const functionSelect = document.getElementById("function-select");
+            var selectedFunction = functionSelect.options[functionSelect.selectedIndex].value;
+            console.log("Selected function:", selectedFunction);
+
+            const response = await fetch('/process_text', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ text, selectedFunction })
+            });
+
+            const data = await response.json();
+            console.log("Response:", data.output);
+
+            var outputDiv = document.getElementById("output");
+            outputDiv.innerText = "Output:\n" + data.output;
+        }
+    </script>
+</body>
+
+</html>
